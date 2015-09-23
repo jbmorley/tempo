@@ -1,6 +1,6 @@
-APP Tempo21
+APP Tempo
 	TYPE $1001
-	ICON "\opd\Tempo2"
+	ICON "\opd\Tempo"
 ENDA
 PROC start:
 	GLOBAL a%,b%,b&,g%,z%
