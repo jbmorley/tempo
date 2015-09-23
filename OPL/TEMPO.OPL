@@ -5,7 +5,7 @@ ENDA
 PROC start:
 	GLOBAL a%,b%,b&,g%,z%
 	LOCAL id%(1),i%,j%,s$(5,10),w%,h%,k%,h$(9),a$(5)
-	giprint "Registered to: Barrie Morley",1
+	giprint "¸ Jason Barrie Morley & Jon Asseton 1998-2015",1
 	PAUSE 10
 	w%=480 :h%=160
 	s$(1)="Tempo21"
@@ -268,7 +268,7 @@ PROC beatc:
 ENDP
 PROC proca:
 	dinit "TEMPO Verstion 2.1"
-	dtext "","¸ Jason Barrie Morley & Jon Asseton 1999"
+	dtext "","¸ Jason Barrie Morley & Jon Asseton 1998-2015"
 	return dialog
 ENDP
 PROC procr:
