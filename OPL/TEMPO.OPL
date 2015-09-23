@@ -2,6 +2,7 @@ APP Tempo
 	TYPE $1001
 	ICON "\opd\Tempo"
 ENDA
+
 PROC start:
 	GLOBAL a%,b%,b&,g%,z%
 	LOCAL id%(1),i%,j%,s$(5,10),w%,h%,k%,h$(9),a$(5)
