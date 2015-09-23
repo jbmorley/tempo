@@ -1,10 +1,14 @@
+APP Tempo
+	TYPE $1001
+	ICON "\OPD\TEMPO"
+ENDA
 PROC start:
 	GLOBAL a%,b%,b&,g%,z%
 	LOCAL id%(1),i%,j%,s$(5,10),w%,h%,k%,h$(9),a$(5)
 	giprint "Registered to: NOSAJ",1
 	PAUSE 10
 	w%=480 :h%=160
-	s$(1)="Testtem"
+	s$(1)="Tempo21"
 	i%=gloadbit(s$(1))
 	id%(1)=gcreate(0,0,w%,h%,0)
 	gcopy i%,0,0,w%,h%,0
@@ -63,8 +67,6 @@ PROC drawa:
 	dbuttons "Cancel",-27,"Start",13
 	if dialog=13
 	giprint "Press any key to stop"
-	gat 20,20
-	gprint beat&
 	IF a%=1
 	i%=0 :gorder 1,9
 	z=beat&**-1.1187
@@ -332,22 +334,27 @@ PROC procm:
 ENDP
 PROC proce:
 	LOCAL s%,y,w,v%,j%,a&,w%,k%,id%,id%(1),i%,s$(5,10),h%,h$(9),a$(5)
-	gclose 2
+	gCLOSE 2
+	gCLOSE 3
+	gORDER 1,1
+	gUSE 1
+	gCLS
+	STATUSWIN ON
 	FONT 8,1
 	phil::
+	CLS
 	j%=0 :a&=0 :y=0 :w=0 :w%=0
 	v%=1
 	s%=10
-	dinit "Press any key in time with music"
-	dialog
-	giPRINT "Press menu to quit"
+	gBORDER $200
+	AT 1,1
+	PRINT "Press any key in time with music"
+	PRINT "                     (menu to quit)"
 	AT 1,4
-	dinit "Press any key to start timing"
-	dialog
+	PRINT "Press any key to start timing"
 	GET
 	CLS
-	dinit "Press a key for each beat of music"
-	dialog
+	PRINT "Press a key for each beat of music"
 		seb::
 		j%=0
 			DO
@@ -376,9 +383,8 @@ PROC proce:
 		w=w+0.6
 		w%=INT(w)
 		IF v%=1
-		gat 410,120
-		gprint w%
-		else gat 400,100: gfill 54,30,1: gat 410,120: gprint w%
+		PRINT w%,"BPM (approx)"
+		ELSE PRINT w%, "BPM"
 		ENDIF
 		v%=2
 		k%=0
@@ -388,7 +394,7 @@ PROC proce:
 	bob::
 	CLS
 	w%=480 :h%=160
-	s$(1)="Testtem"
+	s$(1)="Tempo21"
 	i%=gloadbit(s$(1))
 	id%(1)=gcreate(0,0,w%,h%,0)
 	gcopy i%,0,0,w%,h%,0
