@@ -4,405 +4,445 @@ APP Tempo
 ENDA
 
 PROC start:
-	GLOBAL a%,b%,b&,g%,z%
-	LOCAL id%(1),i%,j%,s$(5,10),w%,h%,k%,h$(9),a$(5)
-	giprint "¸ Jason Barrie Morley & Jon Asseton 1998-2015",1
+	GLOBAL a%, b%, b&, g%, z%
+	LOCAL id%(1), i%, j%, s$(5, 10), w%, h%, k%, h$(9), a$(5)
+
+	gIPRINT "¸ Jason Barrie Morley & Jon Asseton 1998-2015", 1
 	PAUSE 10
-	w%=480 :h%=160
-	s$(1)="Tempo21"
-	i%=gloadbit(s$(1))
-	id%(1)=gcreate(0,0,w%,h%,0)
-	gcopy i%,0,0,w%,h%,0
-	gsetwin 0,0
-	gorder id%(1),1
-	gvisible on
-	giprint "Press Menu"
-	h$="nebarwmx"
-	while 1
-		fr::
-	k%=get
-		if k%=$122
-		minit
-		mcard "Metronome","Normal",%n,"Normal (without beep)",%w,"First Beat Emphasis",%b
-		mcard "Emonortem","Emonortem",%e
-		mcard "Nosaj Software!","About",%a,"User Manual",%m,"Exit",%x
-		k%=menu
-			if k% and intf(loc(h$,chr$(k%)))
-			a$="proc"+chr$(k%)
-			@(a$):
-			endif
-		elseif k% and $200
-	k%=(k%-$200) and $ffdf
-	k%=loc(h$,chr$(k%))
-			if k%
-			a$="proc"+mid$(h$,k%,1)
-			@(a$):
-			endif
+
+	w% = 480 :h% = 160
+	s$(1) = "Tempo21"
+	i% = gLOADBIT(s$(1))
+	id%(1) = gCREATE(0, 0, w%, h%, 0)
+	gCOPY i%, 0, 0, w%, h%, 0
+	gSETWIN 0, 0
+	gORDER id%(1), 1
+	gVISIBLE on
+	gIPRINT "Press Menu"
+	h$ = "nebarwmx"
+	WHILE 1
+		k% = get
+		IF k% = $122
+			mINIT
+			mCARD "Metronome", "Normal", %n, "Normal (without BEEP)", %w, "First Beat Emphasis", %b
+			mCARD "Emonortem", "Emonortem", %e
+			mCARD "Nosaj Software!", "About", %a, "User Manual", %m, "Exit", %x
+			k% = menu
+			IF k% and intf(loc(h$, chr$(k%)))
+				a$ = "proc"+chr$(k%)
+				@(a$):
+			ENDIF
+		ELSEIF k% and $200
+			k% = (k%-$200) and $ffdf
+			k% = loc(h$, chr$(k%))
+			IF k%
+				a$ = "proc"+mid$(h$, k%, 1)
+				@(a$):
+			ENDIF
 		ENDIF
-		GOTO fr::
-		endwh
+	ENDWH
 ENDP
+
 PROC procw:
-	a%=1
+	a% = 1
 	drawa:
 ENDP
+
 PROC procn:
-	a%=2
+	a% = 2
 	drawa:
 ENDP
+
 PROC drawa:
-	local beat&,id%,id%(2),i%,j%,s$(5,10),w%,h%,z,z%,y%,y,v%
-	w%=233 :h%=25
-	s$(1)="beeb1" :s$(2)="beeb2"
-	j%=1
-	while j%<3
-	i%=gloadbit(s$(j%))
-	id%(j%)=gcreate(0,0,w%,h%,0)
-	gcopy i%,0,0,w%,h%,3
-	gclose i%
-	j%=j%+1
-	endwh
-	i%=0 :gorder 1,9
+	LOCAL beat&, id%, id%(2), i%, j%, s$(5, 10), w%, h%, z, z%, y%, y, v%
+	w% = 233 :h% = 25
+	s$(1) = "beeb1" :s$(2) = "beeb2"
+	j% = 1
+	WHILE j%<3
+		i% = gLOADBIT(s$(j%))
+		id%(j%) = gCREATE(0, 0, w%, h%, 0)
+		gCOPY i%, 0, 0, w%, h%, 3
+		gCLOSE i%
+		j% = j%+1
+	ENDWH
+	i% = 0 :gORDER 1, 9
+
 	dINIT "NOSAJ SOFTWARE Metronome"
-	dlong beat&,"Metronome Marking (Beats per Minute)",50,250
-	dbuttons "Cancel",-27,"Start",13
-	if dialog=13
-	giprint "Press any key to stop"
-	IF a%=1
-	i%=0 :gorder 1,9
-	z=beat&**-1.1187
-	z%=(z*279825)
-	z=(-8E-06)*(beat&**3)+0.0028*(beat&**2)+(0.1111*beat&)-35
-	z%=INT(z%-z)
-	DO
-		j%=(i%-2*(i%/2))+1
-		gvisible off
-		guse id%(j%)
-		gsetwin 128,76
-		gvisible on
-		i%=i%+1
-		a%=0
+	dLONG beat&, "Metronome Marking (Beats per Minute)", 50, 250
+	dBUTTONS "Cancel", -27, "Start", 13
+	IF DIALOG = 13
+		gIPRINT "Press any key to stop"
+		IF a% = 1
+			i% = 0 :gORDER 1, 9
+			z = beat&**-1.1187
+			z% = (z*279825)
+			z = (-8E-06) * (beat&**3) + 0.0028 * (beat&**2) + (0.1111 * beat&) - 35
+			z% = INT(z%-z)
 			DO
-				a%=a%+1
-			UNTIL a%=z%
-	UNTIL KEY OR (i%>(600-w%))
-	gvisible off
-	else
-	i%=0 :gorder 1,9
-	z=beat&**-1.1187
-	z%=(z*279825)
-	z=(-8E-06)*(beat&**3)+0.0028*(beat&**2)+(0.1111*beat&)+2
-	z%=INT(z%-z)
-		do
-	j%=(i%-2*(i%/2))+1
-	gvisible off
-	guse id%(j%)
-	gsetwin 128,76
-	gvisible on
-	i%=i%+1
-	beep 1,300
-	a%=0
-	DO
-		a%=a%+1
-	UNTIL a%=z%
-	until key or (i%>(600-w%))
-	gvisible off
+				j% = (i% - 2 * (i% / 2)) + 1
+				gVISIBLE off
+				gUSE id%(j%)
+				gSETWIN 128, 76
+				gVISIBLE on
+				i% = i%+1
+				a% = 0
+				DO
+					a% = a% + 1
+				UNTIL a% = z%
+			UNTIL KEY OR (i% > (600 - w%))
+			gVISIBLE off
+		ELSE
+			i% = 0 :gORDER 1, 9
+			z = beat& ** -1.1187
+			z% = (z * 279825)
+			z = (-8E-06) * (beat& ** 3) + 0.0028 * (beat& ** 2) + (0.1111 * beat&) + 2
+			z% = INT(z% - z)
+			DO
+				j% = (i% - 2 * (i% / 2)) + 1
+				gVISIBLE off
+				gUSE id%(j%)
+				gSETWIN 128, 76
+				gVISIBLE on
+				i% = i% + 1
+				BEEP 1, 300
+				a% = 0
+				DO
+					a% = a% + 1
+				UNTIL a% = z%
+			UNTIL key or (i% > (600 - w%))
+			gVISIBLE off
+		ENDIF
 	ENDIF
-	endif
 	gCLOSE 5
 	gCLOSE 6
 ENDP
+
 PROC procb:
-	LOCAL f%,g$(37),b$(5),n%,h%,z
+	LOCAL f%, g$(37), b$(5), n%, h%, z
 	dINIT "First Beat Emphesis"
-	dCHOICE f%,"Number of beats per bar","2,3,4,5,6,9,12,15"
+	dCHOICE f%, "Number of beats per bar", "2, 3, 4, 5, 6, 9, 12, 15"
 	DIALOG
-		IF f%=1 :g$="TWO BEATS PER BAR (Simple)" :g%=2
-		ELSEIF f%=2 :g$="THREE BEATS PER BAR (Simple/Compound)" :g%=3
-		ELSEIF f%=3 :g$="FOUR BEATS PER BAR (Simple)" :g%=4
-		ELSEIF f%=4 :g$="FIVE BEATS PER BAR (Simple)" :g%=5
-		ELSEIF f%=5 :g$="SIX BEATS PER BAR (Compound)" :g%=6
-		ELSEIF f%=6 :g$="NINE BEATS PER BAR (Compound)" :g%=8
-		ELSEIF f%=7 :g$="TWELVE BEATS PER BAR (Compound)" :g%=10
-		ELSEIF f%=8 :g$="FIFTEEN BEATS PER BAR (Compound)" :g%=12
+		IF f% = 1 :g$ = "TWO BEATS PER BAR (Simple)" :g% = 2
+		ELSEIF f% = 2 :g$ = "THREE BEATS PER BAR (Simple/Compound)" :g% = 3
+		ELSEIF f% = 3 :g$ = "FOUR BEATS PER BAR (Simple)" :g% = 4
+		ELSEIF f% = 4 :g$ = "FIVE BEATS PER BAR (Simple)" :g% = 5
+		ELSEIF f% = 5 :g$ = "SIX BEATS PER BAR (Compound)" :g% = 6
+		ELSEIF f% = 6 :g$ = "NINE BEATS PER BAR (Compound)" :g% = 8
+		ELSEIF f% = 7 :g$ = "TWELVE BEATS PER BAR (Compound)" :g% = 10
+		ELSEIF f% = 8 :g$ = "FIFTEEN BEATS PER BAR (Compound)" :g% = 12
 		ELSE return f%
 	ENDIF
 	dINIT g$
-	dlong b&,"Metronome Marking (Beats per Minute)",50,250
-	dbuttons "Cancel",-27,"Start",13
-	if dialog=13
-		IF g%<6
-		beatb:
-		ELSEIF g%>5
-		beatc:
+	dLONG b&, "Metronome Marking (Beats per Minute)", 50, 250
+	dBUTTONS "Cancel", -27, "Start", 13
+	IF DIALOG = 13
+		IF g% < 6
+			beatb:
+		ELSEIF g% > 5
+			beatc:
 		ENDIF
 	ENDIF
 ENDP
-PROC beatb:
-	LOCAL beat&,id%,id%(2),i%,j%,s$(5,10),w%,h%,z,z%,y%,y,r%
-	w%=233 :h%=25
-	s$(1)="beeb1" :s$(2)="beeb2"
-	j%=1
-	while j%<3
-	i%=gloadbit(s$(j%))
-	id%(j%)=gcreate(0,0,w%,h%,0)
-	gcopy i%,0,0,w%,h%,3
-	gclose i%
-	j%=j%+1
-	endwh
-	i%=0 :gorder 1,9
 
-		giprint "Press any key to stop"
-	z=b&**-1.1187
-	z%=(z*279825)
-	z=(-8E-06)*(b&**3)+0.0028*(b&**2)+(0.1111*b&)+2
-	z%=INT(z%-z)
-		blob::
-		h%=1
-		r%=1
+PROC beatb:
+	LOCAL beat&, id%, id%(2), i%, j%, s$(5, 10), w%, h%, z, z%, y%, y, r%
+	w% = 233 :h% = 25
+	s$(1) = "beeb1" :s$(2) = "beeb2"
+	j% = 1
+	WHILE j%<3
+		i% = gLOADBIT(s$(j%))
+		id%(j%) = gCREATE(0, 0, w%, h%, 0)
+		gCOPY i%, 0, 0, w%, h%, 3
+		gCLOSE i%
+		j% = j% + 1
+	ENDWH
+	i% = 0 :gORDER 1, 9
+
+	gIPRINT "Press any key to stop"
+
+	z = b& ** -1.1187
+	z% = (z * 279825)
+	z = (-8E-06) * (b& ** 3) + 0.0028 * (b& ** 2) + (0.1111 * b&) + 2
+	z% = INT(z% - z)
+blob::
+	h% = 1
+	r% = 1
+	GOTO reb::
+reba::
+	BEEP 1, 300
+	a% = 0
+
+	DO
+		a% = a% + 1
+	UNTIL a% = z%
+
+	WHILE h% < g%
+		r% = 2
 		GOTO reb::
-		reba::
-		beep 1,300
-		a%=0
+rebb::
+		BEEP 1, 400
+		a% = 0
 		DO
-			a%=a%+1
-		UNTIL a%=z%
-			WHILE h%<g%
-				r%=2
-				GOTO reb::
-				rebb::
-				beep 1,400
-		a%=0
-		DO
-			a%=a%+1
-		UNTIL a%=z%
-					IF key
-						GOTO bodge::
-					ENDIF
-				h%=h%+1
-			ENDWH
-		GOTO blob::
-	reb::
-		j%=(i%-2*(i%/2))+1
-		gvisible off
-		guse id%(j%)
-		gsetwin 128,76
-		gvisible on
-		i%=i%+1
-		IF r%=1
-			GOTO reba::
+			a% = a% + 1
+		UNTIL a% = z%
+		IF key
+			GOTO bodge::
 		ENDIF
-		GOTO rebb::
-		bodge::
-		gCLOSE 5
-		gCLOSE 6
+		h% = h% + 1
+	ENDWH
+	GOTO blob::
+
+reb::
+	j% = (i% - 2 * (i% / 2)) + 1
+	gVISIBLE off
+	gUSE id%(j%)
+	gSETWIN 128, 76
+	gVISIBLE on
+	i% = i% + 1
+	IF r% = 1
+		GOTO reba::
+	ENDIF
+	GOTO rebb::
+
+bodge::
+	gCLOSE 5
+	gCLOSE 6
+
 ENDP
+
 PROC beatc:
-	LOCAL beat&,id%,id%(2),i%,j%,s$(5,10),w%,h%,z,z%,y%,y,r%
-	w%=233 :h%=25
-	s$(1)="beeb1" :s$(2)="beeb2"
-	j%=1
-	while j%<3
-	i%=gloadbit(s$(j%))
-	id%(j%)=gcreate(0,0,w%,h%,0)
-	gcopy i%,0,0,w%,h%,3
-	gclose i%
-	j%=j%+1
-	endwh
-	i%=0 :gorder 1,9
-	giprint "Press any key to stop"
-	z=b&**-1.1187
-	z%=(z*279825)
-	z=(-8E-06)*(b&**3)+0.0028*(b&**2)+(0.1111*b&)+2
-	z%=INT(z%-z)
-		blob::
-		h%=2
-		r%=1
+
+	LOCAL beat&, id%, id%(2), i%, j%, s$(5, 10), w%, h%, z, z%, y%, y, r%
+	w% = 233 :h% = 25
+	s$(1) = "beeb1" :s$(2) = "beeb2"
+	j% = 1
+	WHILE j%<3
+		i% = gLOADBIT(s$(j%))
+		id%(j%) = gCREATE(0, 0, w%, h%, 0)
+		gCOPY i%, 0, 0, w%, h%, 3
+		gCLOSE i%
+		j% = j% + 1
+	ENDWH
+	i% = 0 :gORDER 1, 9
+	gIPRINT "Press any key to stop"
+	z = b& ** -1.1187
+	z% = (z * 279825)
+	z = (-8E-06) * (b& ** 3) + 0.0028 * (b& ** 2) + (0.1111 * b&) + 2
+	z% = INT(z% - z)
+
+blob::
+		h% = 2
+		r% = 1
 		GOTO reb::
-		reba::
-		beep 1,300
-		a%=0
+reba::
+		BEEP 1, 300
+		a% = 0
 		DO
-			a%=a%+1
-		UNTIL a%=z%
-			WHILE h%<g%
-				IF h%=4 OR h%=6 OR h%=8 OR h%=10
-					r%=2
-					GOTO reb::
-					rebb::
-					beep 1,350
-		a%=0
-		DO
-			a%=a%+1
-		UNTIL a%=z%
-				ENDIF
-				IF key
-					GOTO bodge::
-				ENDIF
-				r%=3
+			a% = a% + 1
+		UNTIL a% = z%
+
+		WHILE h% < g%
+			IF h% = 4 OR h% = 6 OR h% = 8 OR h% = 10
+				r% = 2
 				GOTO reb::
-				rebc::
-				beep 1,400
-		a%=0
-		DO
-			a%=a%+1
-		UNTIL a%=z%
-				h%=h%+1
-			ENDWH
+rebb::
+				BEEP 1, 350
+				a% = 0
+				DO
+					a% = a% + 1
+				UNTIL a% = z%
+			ENDIF
+			IF key
+				GOTO bodge::
+			ENDIF
+			r% = 3
+			GOTO reb::
+rebc::
+			BEEP 1, 400
+			a% = 0
+			DO
+				a% = a% + 1
+			UNTIL a% = z%
+			h% = h% + 1
+		ENDWH
+
 		GOTO blob::
-	reb::
-		j%=(i%-2*(i%/2))+1
-		gvisible off
-		guse id%(j%)
-		gsetwin 128,76
-		gvisible on
-		i%=i%+1
-		IF r%=1
+reb::
+		j% = (i% - 2 * (i% / 2)) + 1
+		gVISIBLE off
+		gUSE id%(j%)
+		gSETWIN 128, 76
+		gVISIBLE on
+		i% = i% + 1
+		IF r% = 1
 			GOTO reba::
-		ELSEIF r%=2
+		ELSEIF r% = 2
 			GOTO rebb::
 		ENDIF
 		GOTO rebc::
-		bodge::
+bodge::
 		gCLOSE 5
 		gCLOSE 6
 ENDP
+
 PROC proca:
-	dinit "TEMPO Verstion 2.1"
-	dtext "","¸ Jason Barrie Morley & Jon Asseton 1998-2015"
-	return dialog
+
+	dINIT "TEMPO Verstion 2.1"
+	dTEXT "", "¸ Jason Barrie Morley & Jon Asseton 1998-2015"
+	return DIALOG
+
 ENDP
+
 PROC procr:
-	dinit "Registration"
-	dtext "","TEMPO Version 2.1 is SHAREWARE and requires registering",$002
-	dtext "","This version of TEMPO only allows you to use certain",$002
-	dtext "","features.  To be able to use the full version",$002
-	dtext "","you must register.",$002
-	dtext "","Registration only costs œ5.00 and is easily done by",$002
-	dtext "","printing out 'Register.txt', filling it in, and sending",$002
-	dtext "","it, along with œ5.00 to the following address:",$002
-	dialog
-	dinit "Nosaj"
-	dtext "","7 Allansford Avenue",$001
-	dtext "","Waverton",$001
-	dtext "","Chester",$001
-	dtext "","CHESHIRE",$001
-	dtext ""," ",$001
-	dtext "","CH3 7QH",$001
-	dialog
+
+	dINIT "Registration"
+	dTEXT "", "TEMPO Version 2.1 is SHAREWARE and requires registering", $002
+	dTEXT "", "This version of TEMPO only allows you to use certain", $002
+	dTEXT "", "features.  To be able to use the full version", $002
+	dTEXT "", "you must register.", $002
+	dTEXT "", "Registration only costs œ5.00 and is easily done by", $002
+	dTEXT "", "printing out 'Register.txt',  filling it in,  and sending", $002
+	dTEXT "", "it,  along with œ5.00 to the following address:", $002
+	DIALOG
+
+	dINIT "Nosaj"
+	dTEXT "", "7 Allansford Avenue", $001
+	dTEXT "", "Waverton", $001
+	dTEXT "", "Chester", $001
+	dTEXT "", "CHESHIRE", $001
+	dTEXT "", " ", $001
+	dTEXT "", "CH3 7QH", $001
+	DIALOG
+
 ENDP
+
 PROC procm:
-	dinit "TEMPO Version 2.1: User Manual"
-	dtext "","TEMPO is a NOSAJ SOFTWARE program which features three",$002
-	dtext "","fully functional musical applications:",$002
-	dtext ""," ",$002
-	dtext "","* METRONOME - a graphic display metronome",$002
-	dtext "","* EMONORTEM - a 'reverse metronome'",$002
-	dtext "","* 1ST BEAT EMPHASIS - a metronome with 1st beat emphasis",$002
-	dtext ""," ",$002
-	dtext "","Press Any Key",$001
+
+	dINIT "TEMPO Version 2.1: User Manual"
+	dTEXT "", "TEMPO is a NOSAJ SOFTWARE program which features three", $002
+	dTEXT "", "fully functional musical applications:", $002
+	dTEXT "", " ", $002
+	dTEXT "", "* METRONOME - a graphic display metronome", $002
+	dTEXT "", "* EMONORTEM - a 'reverse metronome'", $002
+	dTEXT "", "* 1ST BEAT EMPHASIS - a metronome with 1st beat emphasis", $002
+	dTEXT "", " ", $002
+	dTEXT "", "Press Any Key", $001
 	DIALOG
-	dinit "* METRONOME - a graphic display metronome"
-	dtext "","There are two modes to the 'normal' metronome:",$002
-	dtext "","Normal or Normal (without beep)",$002
-	dtext ""," ",$002
-	dtext "","Each of these modes can be accessed from the",$002
-	dtext "","'Metromone' menu heading and can be run by entering",$002
-	dtext "","'Beats per Minuite (Metronome Marking)' when prompted.",$002
-	dtext ""," ",$002
-	dtext "","Press Any Key",$001
+
+	dINIT "* METRONOME - a graphic display metronome"
+	dTEXT "", "There are two modes to the 'normal' metronome:", $002
+	dTEXT "", "Normal or Normal (without BEEP)", $002
+	dTEXT "", " ", $002
+	dTEXT "", "Each of these modes can be accessed from the", $002
+	dTEXT "", "'Metromone' menu heading and can be run by entering", $002
+	dTEXT "", "'Beats per Minuite (Metronome Marking)' when prompted.", $002
+	dTEXT "", " ", $002
+	dTEXT "", "Press Any Key", $001
 	DIALOG
-	dinit "* EMONORTEM - a 'reverse metronome'"
-	dtext "","This allow you to calculate the tempo of a piece",$002
-	dtext "","of music:",$002
-	dtext "","Emonortem can be accessed from the",$002
-	dtext "","'Emonortem' menu heading, and is used",$002
-	dtext "","by pressing any key in time with",$002
-	dtext "","music.  N.B. Continue to use it for",$002
-	dtext "","more accuracy",$002
-	dtext "","Press Any Key",$001
+
+	dINIT "* EMONORTEM - a 'reverse metronome'"
+	dTEXT "", "This allow you to calculate the tempo of a piece", $002
+	dTEXT "", "of music:", $002
+	dTEXT "", "Emonortem can be accessed from the", $002
+	dTEXT "", "'Emonortem' menu heading,  and is used", $002
+	dTEXT "", "by pressing any key in time with", $002
+	dTEXT "", "music.  N.B. Continue to use it for", $002
+	dTEXT "", "more accuracy", $002
+	dTEXT "", "Press Any Key", $001
 	DIALOG
-	dinit "* 1ST BEAT EMPHASIS - a metronome with 1st beat emphasis"
-	dtext "","This is a normal metronome, as with 'Metronome'.",$002
-	dtext "","However this can also be use to emphase the first",$002
-	dtext "","beat of the bar: 1st Beat Emphasis can be accesed",$002
-	dtext "","from the 'Metronome' menu heading and involves",$002
-	dtext "","entering the number of beats per minute, followed",$002
-	dtext "","by the number of beats in each bar",$002
-	dtext ""," ",$002
-	dtext "","Press Any Key To Finish",$001
+
+	dINIT "* 1ST BEAT EMPHASIS - a metronome with 1st beat emphasis"
+	dTEXT "", "This is a normal metronome,  as with 'Metronome'.", $002
+	dTEXT "", "However this can also be use to emphase the first", $002
+	dTEXT "", "beat of the bar: 1st Beat Emphasis can be accesed", $002
+	dTEXT "", "from the 'Metronome' menu heading and involves", $002
+	dTEXT "", "entering the number of beats per minute,  followed", $002
+	dTEXT "", "by the number of beats in each bar", $002
+	dTEXT "", " ", $002
+	dTEXT "", "Press Any Key To Finish", $001
 	DIALOG
+
 ENDP
+
 PROC proce:
-	LOCAL s%,y,w,v%,j%,a&,w%,k%,id%,id%(1),i%,s$(5,10),h%,h$(9),a$(5)
+
+	LOCAL s%, y, w, v%, j%, a&, w%, k%, id%, id%(1), i%, s$(5, 10), h%, h$(9), a$(5)
 	gCLOSE 2
 	gCLOSE 3
-	gORDER 1,1
+	gORDER 1, 1
 	gUSE 1
 	gCLS
 	STATUSWIN ON
-	FONT 8,1
-	phil::
+	FONT 8, 1
+
+phil::
 	CLS
-	j%=0 :a&=0 :y=0 :w=0 :w%=0
-	v%=1
-	s%=10
+	j% = 0 :a& = 0 :y = 0 :w = 0 :w% = 0
+	v% = 1
+	s% = 10
 	gBORDER $200
-	AT 1,1
+	AT 1, 1
 	PRINT "Press any key in time with music"
 	PRINT "                     (menu to quit)"
-	AT 1,4
+	AT 1, 4
 	PRINT "Press any key to start timing"
 	GET
 	CLS
 	PRINT "Press a key for each beat of music"
-		seb::
-		j%=0
-			DO
-				loop::
-					a&=a&+1
-					k%=KEY
-		if k%=$122
-		minit
-		mcard "Emonortem","Quit",%q,"Continue",%c,"New",%n
-		k%=menu
-			IF k%=%q :GOTO bob::
-			ELSEIF k%=%c :GOTO loop::
-			ELSEIF k%=%n :GOTO phil::
-			ENDIF
-		ELSEIF k%=0
-		GOTO loop::
+
+seb::
+	j% = 0
+
+	DO
+loop::
+		a& = a&+1
+		k% = KEY
+		IF k% = $122
+			mINIT
+			mCARD "Emonortem", "Quit", %q, "Continue", %c, "New", %n
+			k% = MENU
+				IF k% = %q :GOTO bob::
+				ELSEIF k% = %c :GOTO loop::
+				ELSEIF k% = %n :GOTO phil::
+				ENDIF
+			ELSEIF k% = 0
+			GOTO loop::
 		ENDIF
-			j%=j%+1
-			UNTIL j%=10
-		w=INTF(a&)
-		w=w/s%
-		y=w/279825
-		w=(y**(-0.89389))
-		w=1E-10*(w**4)-(3E-07*(w**3))+0.0002*(w**2)+0.2475*w
-		y=6E-05*(w**4)+8E-06*(w**3)-0.0021*(w**2)+0.1962*w-4.721
-		w=w+0.6
-		w%=INT(w)
-		IF v%=1
-		PRINT w%,"BPM (approx)"
-		ELSE PRINT w%, "BPM"
-		ENDIF
-		v%=2
-		k%=0
-		s%=s%+10
-		giPRINT "Press Menu to Quit"
-		GOTO seb::
-	bob::
+		j% = j%+1
+	UNTIL j% = 10
+
+	w = INTF(a&)
+	w = w/s%
+	y = w/279825
+	w = (y**(-0.89389))
+	w = 1E - 10 * (w**4) - (3E - 07 * (w**3)) + 0.0002 * (w**2) + 0.2475 * w
+	y = 6E - 05 * (w**4) + 8E - 06 * (w**3) - 0.0021 * (w**2) + 0.1962 * w - 4.721
+	w = w + 0.6
+	w% = INT(w)
+	IF v% = 1
+		PRINT w%, "BPM (approx)"
+	ELSE
+		PRINT w%,  "BPM"
+	ENDIF
+	v% = 2
+	k% = 0
+	s% = s%+10
+	gIPRINT "Press Menu to Quit"
+	GOTO seb::
+
+bob::
 	CLS
-	w%=480 :h%=160
-	s$(1)="Tempo21"
-	i%=gloadbit(s$(1))
-	id%(1)=gcreate(0,0,w%,h%,0)
-	gcopy i%,0,0,w%,h%,0
-	gsetwin 0,0
-	gorder id%(1),1
-	gvisible on
+	w% = 480 :h% = 160
+	s$(1) = "Tempo21"
+	i% = gLOADBIT(s$(1))
+	id%(1) = gCREATE(0, 0, w%, h%, 0)
+	gCOPY i%, 0, 0, w%, h%, 0
+	gSETWIN 0, 0
+	gORDER id%(1), 1
+	gVISIBLE on
+
 ENDP
+
 PROC procx:
 	stop
 ENDP
