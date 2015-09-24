@@ -287,7 +287,7 @@ ENDP
 
 PROC proca:
 
-	dINIT "TEMPO Verstion 2.1"
+	dINIT "TEMPO Version 2.5"
 	dTEXT "", "¸ Jason Barrie Morley & Jon Asseton 1998-2015"
 	return DIALOG
 
@@ -296,7 +296,7 @@ ENDP
 PROC procr:
 
 	dINIT "Registration"
-	dTEXT "", "TEMPO Version 2.1 is SHAREWARE and requires registering", $002
+	dTEXT "", "TEMPO Version 2.5 is SHAREWARE and requires registering", $002
 	dTEXT "", "This version of TEMPO only allows you to use certain", $002
 	dTEXT "", "features.  To be able to use the full version", $002
 	dTEXT "", "you must register.", $002
@@ -318,7 +318,7 @@ ENDP
 
 PROC procm:
 
-	dINIT "TEMPO Version 2.1: User Manual"
+	dINIT "TEMPO Version 2.5: User Manual"
 	dTEXT "", "TEMPO is a NOSAJ SOFTWARE program which features three", $002
 	dTEXT "", "fully functional musical applications:", $002
 	dTEXT "", " ", $002
